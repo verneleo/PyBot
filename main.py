@@ -1,20 +1,34 @@
 import os
 from dotenv import load_dotenv
-from telegram import Update, KeyboardButton
+from telegram import Update, ReplyKeyboardMarkup, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters
 
 load_dotenv()
 
 TOKEN = os.getenv("BOT_TOKEN")
 
-print(TOKEN)
+keyboard = [["Комедия", "Боевик"], ["Драма", "Детектив"], ["Помощь"]]
 
+genres = set()
+
+for row in keyboard:
+    for genre in row:
+         genres.add(genre.lower)
+
+genres_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
+    
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Привет! \nЯ бот для поиска фильмов.")
-    print(update.message.text)
+    await update.message.reply_text("Привет!" \
+    "\nЯ бот для поиска фильмов. " \
+    "\nВыбери жанр", reply_markup=genres_markup)
+    
 
 async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Памятка о командах: \n/help - сводка о всех командах \n/start - запуск бота")
+    await update.message.reply_text("Памятка о командах:" \
+    "\n/help - сводка о всех командах"
+    "\n/start - запуск бота"
+    "\n/whoami - вывод вашего username" \
+    "\n/hello - приветствие")
 
 async def whoami(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(f"Твой username: {update.effective_user.username}")
@@ -43,12 +57,16 @@ async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
          clear_message = message
     if clear_message.startswith("привет"):
-            await update.message.reply_text(f"Привет, {uname}!")
+        await update.message.reply_text(f"Привет, {uname}!")
     elif clear_message.startswith("пока"):
-            await update.message.reply_text(f"До встречи, {uname}!")
+        await update.message.reply_text(f"До встречи, {uname}!")
+    elif clear_message.startswith("помощь"):
+        await help(update, context)
     else:        
             await update.message.reply_text(f"Я ещё не знаю, что значит '{message}'")
     
+
+
 app = Application.builder().token(TOKEN).build()
 
 app.add_handler(CommandHandler("start", start))
