@@ -63,6 +63,7 @@ requirements.txt - Dependencies
 - Rating filters
 - Watch history
 - Favorites
-- License
+
+# License
 
 This project is created for educational purposes.
