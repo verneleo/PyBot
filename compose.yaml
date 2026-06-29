@@ -1,0 +1,8 @@
+services:
+  bot:
+    build: .
+    container_name: pybot
+
+    env_file:
+      - .env
+    restart: unless-stopped

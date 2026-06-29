@@ -27,6 +27,8 @@ A Telegram bot that recommends random movies using the Kinopoisk API.
 - Requests
 - poiskkino.dev API
 - dotenv
+- Docker Desktop
+- WSL2 (Windows)
 
 # Installation
 
@@ -47,6 +49,20 @@ A Telegram bot that recommends random movies using the Kinopoisk API.
 ## Run the bot:
 
 - python main.py
+
+# Docker
+
+## Build image
+
+docker build -t pybot .
+
+## Run container
+
+docker -run --env-file .env pybot
+
+## with Docker Compose
+
+docker compose up
 
 # Project Structure
 
